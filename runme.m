@@ -1,0 +1,172 @@
+load connValidate_v015
+
+close all
+
+cocoa = (pvalueACCEPTORSv07 + pvalueDONORSv06) .* (ClusterC1>0);
+M = cocoa/1000;
+
+imagesc(M), colormap(1-gray), colorbar
+
+ind = find(M);
+
+m = M(ind);
+
+sm = sort(m,'ascend');
+figure
+hist(m, 100)
+
+M70 = M>0.7;
+M70 = remove_unconnected(M70);
+
+M50 = M>0.5;
+M50 = remove_unconnected(M50);
+
+M30 = M>0.3;
+M30 = remove_unconnected(M30);
+
+M10 = M>0.1;
+M10 = remove_unconnected(M10);
+
+
+% show_graphs in space
+q = 0.016;
+U0 = -0.01;
+
+% M70 first
+
+figure
+[ C, N1, N2 ] = build_adjacency_matrix( M70 );
+C = C>0;
+
+[ clu, abu ] = find_connected( C );
+ind = find(clu==1);             % the largest connected subcluster
+C = C(ind,ind);
+node_mask = [ones(N1,1); 2*ones(N2,1)];
+node_mask = node_mask(ind);
+N1 = length(find(node_mask==1));
+N2 = length(find(node_mask==2));
+
+[N1, N2]
+
+[x,y,z] = fdgd(C, q, U0);
+
+node_color = [[zeros(N1,1), ones(N1,1), zeros(N1,1)]; [ones(N2,1), zeros(N2,1), zeros(N2,1) ]];
+show_graph2( C, x, y, z, 0.5*[1 1 1], node_color )
+
+alpha(0.6)
+axis off
+camlight
+title('Connectivity validated at matching number \geq 0.7')
+
+% M50 first
+
+figure
+[ C, N1, N2 ] = build_adjacency_matrix( M50 );
+C = C>0;
+
+[ clu, abu ] = find_connected( C );
+ind = find(clu==1);             % the largest connected subcluster
+C = C(ind,ind);
+node_mask = [ones(N1,1); 2*ones(N2,1)];
+node_mask = node_mask(ind);
+N1 = length(find(node_mask==1));
+N2 = length(find(node_mask==2));
+
+[N1, N2]
+
+[x,y,z] = fdgd(C, q, U0);
+
+node_color = [[zeros(N1,1), ones(N1,1), zeros(N1,1)]; [ones(N2,1), zeros(N2,1), zeros(N2,1) ]];
+show_graph2( C, x, y, z, 0.5*[1 1 1], node_color )
+
+alpha(0.6)
+axis off
+camlight
+title('Connectivity validated at matching number \geq 0.5')
+
+% M30 first
+
+figure
+[ C, N1, N2 ] = build_adjacency_matrix( M30 );
+C = C>0;
+
+[ clu, abu ] = find_connected( C );
+ind = find(clu==1);             % the largest connected subcluster
+C = C(ind,ind);
+node_mask = [ones(N1,1); 2*ones(N2,1)];
+node_mask = node_mask(ind);
+N1 = length(find(node_mask==1));
+N2 = length(find(node_mask==2));
+
+[N1, N2]
+
+[x,y,z] = fdgd(C, q, U0);
+
+node_color = [[zeros(N1,1), ones(N1,1), zeros(N1,1)]; [ones(N2,1), zeros(N2,1), zeros(N2,1) ]];
+show_graph2( C, x, y, z, 0.5*[1 1 1], node_color )
+
+alpha(0.6)
+axis off
+camlight
+title('Connectivity validated at matching number \geq 0.3')
+
+
+% M10 first
+
+figure
+[ C, N1, N2 ] = build_adjacency_matrix( M10 );
+C = C>0;
+
+[ clu, abu ] = find_connected( C );
+ind = find(clu==1);             % the largest connected subcluster
+C = C(ind,ind);
+node_mask = [ones(N1,1); 2*ones(N2,1)];
+node_mask = node_mask(ind);
+N1 = length(find(node_mask==1));
+N2 = length(find(node_mask==2));
+
+[N1, N2]
+
+[x,y,z] = fdgd(C, q, U0);
+
+node_color = [[zeros(N1,1), ones(N1,1), zeros(N1,1)]; [ones(N2,1), zeros(N2,1), zeros(N2,1) ]];
+show_graph2( C, x, y, z, 0.5*[1 1 1], node_color )
+
+alpha(0.6)
+axis off
+camlight
+title('Connectivity validated at matching number \geq 0.1')
+
+
+% Full connectivity
+
+figure
+[ C, N1, N2 ] = build_adjacency_matrix( ClusterC1 );
+C = C>0;
+
+[ clu, abu ] = find_connected( C );
+ind = find(clu==1);             % the largest connected subcluster
+C = C(ind,ind);
+node_mask = [ones(N1,1); 2*ones(N2,1)];
+node_mask = node_mask(ind);
+N1 = length(find(node_mask==1));
+N2 = length(find(node_mask==2));
+
+[N1, N2]
+
+[x,y,z] = fdgd(C, q*2, U0);
+
+node_color = [[zeros(N1,1), ones(N1,1), zeros(N1,1)]; [ones(N2,1), zeros(N2,1), zeros(N2,1) ]];
+show_graph2( C, x, y, z, 0.5*[1 1 1], node_color )
+
+alpha(0.6)
+axis off
+camlight
+title('Full connectivity')
+
+
+
+
+
+
+
